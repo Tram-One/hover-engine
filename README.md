@@ -48,3 +48,35 @@ engine.actions.add(8) // -> NEW STATE: { num: 13 }
 engine.actions.sub(5) // -> NEW STATE: { num: 8 }
 engine.store // -> { num: 8 }
 ```
+
+## API
+### `constructor()`
+The constructor builds a new HoverEngine object. It takes in no parameters, and is immediately available for calling actions and store on (although they will be empty until you add actions).
+
+Usage:
+```javascript
+const engine = new HoverEngine()
+```
+
+### `addActions(actionGroups)`
+The `addActions` function adds new actions to the HoverEngine. It takes in a single object, whose keys will be used to get at the store, and whose values is an object mapping action names to functions.
+
+Example actionGroup:
+```javascript
+const actionGroup = {
+  counter: {
+    init: () => 0,
+    increment: (counter) => counter + 1,
+    decrement: (counter) => counter - 1
+  }
+}
+```
+In this example, `counter` is the key which you can use on the `engine.store`. The actions: `init`, `increment`, and `decrement`, are functions which will be called in `engine.actions`
+```javascript
+const engine = new HoverEngine()
+engine.addActions(actionGroup)  // adds the counter action group
+engine.actions.increment()      // calls our increment function for counter
+engine.store.counter            // returns the value at counter (in this case, 1)
+```
+
+### `addListener(listener)`
