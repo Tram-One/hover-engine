@@ -15,7 +15,7 @@ const engine = new HoverEngine()
 engine.addActions({todos: TodoActions})
 engine.addActions({dones: DonesActions})
 
-engine.addListener((state) => console.log('State:', state))
+engine.addListener((store) => console.log('store:', store))
 engine.actions.addTodo('Write More Todos')
 engine.actions.addTodo('Finish docs')
 engine.actions.completeTodo('Write More Todos')

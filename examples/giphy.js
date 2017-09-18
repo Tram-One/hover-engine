@@ -17,7 +17,7 @@ const gifActions = {
 }
 
 const engine = new HoverEngine()
-engine.addListener((state) => console.log('SUBSCRIPTION:', state))
+engine.addListener((store) => console.log('SUBSCRIPTION:', store))
 engine.addActions({giphy: gifActions})
 
 engine.actions.fetchGIF('cat')
