@@ -12,19 +12,17 @@ class HoverEngine {
     }
 
     const engineHandler = {
-      get: (target, name) => {
-        return (args) => {
-          const shouldRunQueue = this.actionQueue.length === 0
-          this.actionQueue.push({actions: this.engine[name], args: args})
+      get: (target, name) => (args) => {
+        const shouldRunQueue = this.actionQueue.length === 0
+        this.actionQueue.push({actions: this.engine[name], args: args})
 
-          // eslint-disable-next-line no-unmodified-loop-condition
-          while (shouldRunQueue && this.actionQueue.length > 0) {
-            const nextAction = this.actionQueue[0]
-            const updateStoreByAction = updateStoreByNextAction(nextAction)
-            this.store = nextAction.actions.reduce(updateStoreByAction, this.store)
-            this.actionQueue.shift()
-            this.notifyListeners()
-          }
+        // eslint-disable-next-line no-unmodified-loop-condition
+        while (shouldRunQueue && this.actionQueue.length > 0) {
+          const nextAction = this.actionQueue[0]
+          const updateStoreByAction = updateStoreByNextAction(nextAction)
+          this.store = nextAction.actions.reduce(updateStoreByAction, this.store)
+          this.actionQueue.shift()
+          this.notifyListeners()
         }
       }
     }
