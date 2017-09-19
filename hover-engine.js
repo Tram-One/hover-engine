@@ -3,7 +3,7 @@ class HoverEngine {
     this.engine = {}
     this.store = {}
     this.actionQueue = []
-    this.subscriptions = []
+    this.listeners = []
 
     const engineHandler = {
       get: (target, name) => {
@@ -72,13 +72,15 @@ class HoverEngine {
   }
 
   addListener(listener) {
-    this.subscriptions.push(listener)
+    this.listeners.push(listener)
 
     return this
   }
 
   notifyListeners() {
-    this.subscriptions.forEach(listener => listener(this.store, this.actions))
+    this.listeners.forEach(listener => listener(this.store, this.actions))
+
+    return this
   }
 
 }
