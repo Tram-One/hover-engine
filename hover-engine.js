@@ -5,23 +5,25 @@ class HoverEngine {
     this.actionQueue = []
     this.listeners = []
 
+    const updateStoreByNextAction = (nextAction) => (store, action) => {
+      return Object.assign({}, store,
+        {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
+      )
+    }
+
     const engineHandler = {
       get: (target, name) => {
         return (args) => {
           const shouldRunQueue = this.actionQueue.length === 0
           this.actionQueue.push({actions: this.engine[name], args: args})
 
-          if (shouldRunQueue) {
-            while (this.actionQueue.length > 0) {
-              const nextAction = this.actionQueue[0]
-              this.store = nextAction.actions.reduce((store, action) => {
-                return Object.assign({}, store,
-                  {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
-                )
-              }, this.store)
-              this.actionQueue.shift()
-              this.notifyListeners()
-            }
+          // eslint-disable-next-line no-unmodified-loop-condition
+          while (shouldRunQueue && this.actionQueue.length > 0) {
+            const nextAction = this.actionQueue[0]
+            const updateStoreByAction = updateStoreByNextAction(nextAction)
+            this.store = nextAction.actions.reduce(updateStoreByAction, this.store)
+            this.actionQueue.shift()
+            this.notifyListeners()
           }
         }
       }
@@ -45,11 +47,12 @@ class HoverEngine {
 
     const getAddKeyToActionFunc = (actionGroups) => {
       return (actionKey) => {
+        const addStoreKeyToAction = (action) => {
+          action._storeKey = actionKey
+          return action
+        }
         return Object.values(actionGroups[actionKey])
-          .map((action) => {
-            action._storeKey = actionKey
-            return action
-          })
+          .map(addStoreKeyToAction)
       }
     }
 
@@ -57,16 +60,18 @@ class HoverEngine {
       .map(getAddKeyToActionFunc(actionGroups))
       .reduce(addActionGroupToEngine, this.engine)
 
-    const addActionObjectToStore = (store, actionObject) => {
-      return Object.assign({}, store, {[actionObject.key]: actionObject.init()})
+    const addInitObjectToStore = (store, initObject) => {
+      return Object.assign({}, store, {[initObject.key]: initObject.init()})
     }
 
+    const actionGroupToInitObject = (actionGroupKey) => Object({
+      key: actionGroupKey,
+      init: actionGroups[actionGroupKey].init
+    })
+
     this.store = Object.keys(actionGroups)
-      .map((actionGroupKey) => Object({
-        key: actionGroupKey,
-        init: actionGroups[actionGroupKey].init
-      }))
-      .reduce(addActionObjectToStore, this.store)
+      .map(actionGroupToInitObject)
+      .reduce(addInitObjectToStore, this.store)
 
     return this
   }

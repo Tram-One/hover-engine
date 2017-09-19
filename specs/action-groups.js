@@ -84,6 +84,40 @@ module.exports.chainActionGroup = (spies) => Object({
     chainIncrement: (state, value, actions) => {
       spies && spies.increment && spies.increment()
       actions.increment()
+      return state + 1
+    }
+  }
+})
+
+module.exports.multipleChainActionGroups = (spies) => Object({
+  A: {
+    init: () => {
+      spies && spies.init && spies.init()
+      return 0
+    },
+    increment: (state) => {
+      spies && spies.increment && spies.increment(state)
+      return state + 1
+    },
+    chainIncrement: (state, value, actions) => {
+      spies && spies.increment && spies.increment()
+      actions.increment()
+      return state + 1
+    }
+  },
+  B: {
+    init: () => {
+      spies && spies.init && spies.init()
+      return 0
+    },
+    increment: (state) => {
+      spies && spies.increment && spies.increment(state)
+      return state + 1
+    },
+    chainIncrement: (state, value, actions) => {
+      spies && spies.increment && spies.increment()
+      actions.increment()
+      return state + 1
     }
   }
 })

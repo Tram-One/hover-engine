@@ -19,7 +19,7 @@ so if you're familar with those frameworks, you'll notice some similarities!
 
 Hover-Engine gives your app the following super-powers:
 * Trigger multiple sets of actions with a single dispatch!
-* Subscribe to as many listeners that are willing to hear you!
+* Notify as many listeners as you want!
 * Handle async (or chained) action calls with [semi-predictable results](https://en.wikipedia.org/wiki/Magic_\(illusion\))!
 * No Dependencies!
 * Light enough to give you flight (1.82 KB)!

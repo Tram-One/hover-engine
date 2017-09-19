@@ -236,25 +236,46 @@ describe('HoverEngine', () => {
     })
 
     it('should be chainable off of actons arguement', () => {
+      engine.addActions(ag.chainActionGroup())
 
+      expect(engine.store.A).toEqual(0)
+      engine.actions.chainIncrement()
+      expect(engine.store.A > 0).toBeTruthy()
     })
 
     it('should call chain-action with updated state', () => {
+      engine.addActions(ag.chainActionGroup())
 
+      expect(engine.store.A).toEqual(0)
+      engine.actions.chainIncrement()
+      expect(engine.store.A).toEqual(2)
     })
 
     it('should call chain-action for all actionGroups', () => {
+      engine.addActions(ag.multipleChainActionGroups())
 
+      expect(engine.store.A).toEqual(0)
+      engine.actions.chainIncrement()
+      // chainIncrement here actually triggers increment twice
+      // chainIncrement -> { A: 1, B: 1 }, queue: [a.increment, b.increment]
+      // dequeue (a's) increment -> { A: 2, B: 2 }, queue: [b.increment]
+      // dequeue (b's) increment -> { A: 3, B: 3 }, queue: []
+      expect(engine.store.A).toEqual(3)
     })
   })
 
   describe('store', () => {
     it('should return the inital states before action calls', () => {
+      engine.addActions(ag.singleActionGroup())
 
+      expect(engine.store.A).toEqual(0)
     })
 
     it('should return updated states after action calls', () => {
+      engine.addActions(ag.singleActionGroup())
+      engine.actions.increment()
 
+      expect(engine.store.A).toEqual(1)
     })
   })
 })
