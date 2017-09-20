@@ -91,10 +91,17 @@ The `init` action is called after `engine.addActions` runs. It is passed no argu
 
 #### Action Arguements
 ```javascript
-const calculatorActions = {
-  init: () => 0,
-  add: (storedValue, number) => storedValue + number,
-  subtract: (storedValue, number) => storedValue - number
+const temperatureActions = {
+  init: () => 70,
+  
+  increaseTemp: (temp) => temp + 1,
+  
+  setTemperature: (temp, newTemp) => newTemp,
+  
+  pullTemperatureFromZipcode: (temp, zipCode, actions) => {
+    fetch('some.temperature.api/' + zipCode)
+      .then((tempData) => actions.setTemperature(tempData))
+  }
 }
 ```
 Excluding the `init` action, all actions are provided with the following arguments:
@@ -102,27 +109,30 @@ Excluding the `init` action, all actions are provided with the following argumen
  - value passed into the action call
  - actions from the Hover-Engine
 
-The first argument allows you to build a new state off of the existing one. In the example above, we `add` or `subtract` from the value currently in the store.
+The first argument allows you to build a new state off of the existing one. In the example above, we `increaseTemp` from the value currently in the store.
+```javascript
+const engine = new HoverEngine()
+engine.addActions({temp: temperatureActions})
+engine.actions.increaseTemp()
+console.log(engine.store) // -> { temp: 71 }
+```
 
 The second arguement is anything that we pass in when we call the action. For example:
 ```javascript
 const engine = new HoverEngine()
-engine.addActions({calc: calculatorActions})
-engine.actions.add(10)
+engine.addActions({temp: temperatureActions})
+engine.actions.setTemperature(-10)
+console.log(engine.store) // -> { temp: -10 }
 ```
-In this example, we would add `10` to the current value in the store.
 
-The last argument is a reference to all available actions in Hover-Engine. These actions can be called and then are added to an existing queue of actions that get fired off one at a time to update the store (as shown by the **weatherActions** example below).
+In this example, we would set temperature `-10` to the current value in the store.
 
+The third argument is a reference to all available actions in Hover-Engine. These actions can be called and then are added to an existing queue of actions that get fired off one at a time to update the store.
 ```javascript
-const weatherActions = {
-  init: () => 'sunny',
-  setWeather: (weather, newWeather) => newWeather,
-  pullWeather: (weather, zipCode, actions) => {
-    fetch(`some.weather.api/${zipCode}`)
-      .then((weatherData) => actions.setWeather(weatherData))
-  }
-}
+const engine = new HoverEngine()
+engine.addActions({temp: temperatureActions})
+engine.actions.pullTemperatureFromZipcode('14623')
+console.log(engine.store) // -> { temp: 76 }
 ```
 
 This can be useful for async actions such as fetching, or when you need to call an action as a result of another action.
