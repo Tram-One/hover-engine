@@ -97,7 +97,7 @@ const calculatorActions = {
   subtract: (storedValue, number) => storedValue - number
 }
 ```
-Excluding from the `init` action, all actions are provided with the following arguments:
+Excluding the `init` action, all actions are provided with the following arguments:
  - current state of the store (for this group of actions)
  - value passed into the action call
  - actions from the Hover-Engine
@@ -169,7 +169,7 @@ engine.addListener((store) => document.body.innerHTML = store.thread.join('<br /
 
 Like `addActions`, you can add as many listeners as you want, each will be called with the new store.
 
-### engine.actions
+### `engine.actions`
 
 As shown above in the various examples above, `engine.actions` provides a means to call any actions that were added via `addActions` off of engine. In addition, `actions` is automatically a composition of all same-named actions.
 
@@ -213,6 +213,6 @@ engine.actions.updateZipCode('14623')
 
 In the example above, same-named actions like `updateZipCode` will fire off for both the `WeatherActions` and the `TimeZoneActions`. It queues up `weather.updateZipCode` and `timezone.updateZipCode`. As both of those resolve, any actions that are triggered (like `getWeatherFromZipCode` and `setWeather`) will also get added to the queue in order, and each will take in an updated version of the state.
 
-### engine.store
+### `engine.store`
 
 The engine store exposes the current state of all the action groups. When you `addActions` the keys of the action object are the accessors for store values.
