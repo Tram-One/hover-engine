@@ -1,6 +1,6 @@
 {
   "name": "hover-engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a state-management library that runs on technology and magic",
   "main": "dist/hover-engine.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "tram-one",
     "library"
   ],
+  "repository": "https://github.com/JRJurman/hover-engine",
   "author": {
     "name": "Jesse Jurman",
     "email": "j.r.jurman@gmail.com",
