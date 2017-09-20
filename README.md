@@ -94,7 +94,7 @@ The `init` action is called after `engine.addActions` runs. It is passed no argu
 const calculatorActions = {
   init: () => 0,
   add: (storedValue, number) => storedValue + number,
-  subtract: (storedValue, number) => storedValue - number,
+  subtract: (storedValue, number) => storedValue - number
 }
 ```
 Excluding from the `init` action, all actions are provided with the following arguments:
@@ -112,7 +112,20 @@ engine.actions.add(10)
 ```
 In this example, we would add `10` to the current value in the store.
 
-The last argument
+The last argument is a reference to all available actions in Hover-Engine. These actions can be called and then are added to an existing queue of actions that get fired off one at a time to update the store (as shown by the **weatherActions** example below).
+
+```javascript
+const weatherActions = {
+  init: () => 'sunny',
+  setWeather: (weather, newWeather) => newWeather,
+  pullWeather: (weather, zipCode, actions) => {
+    fetch(`some.weather.api/${zipCode}`)
+      .then((weatherData) => actions.setWeather(weatherData))
+  }
+}
+```
+
+This can be useful for async actions such as fetching, or when you need to call an action as a result of another action.
 
 #### Adding Multiple Action Groups
 With Hover-Engine, you can add multiple action groups two different ways. One way is by calling `addActions` multiple times. The other way, is by providing multiple sets of actions in the object you pass in, as shown below.
@@ -140,4 +153,66 @@ You'll notice in the above example that calling `addTodo` actually called both t
 
 ### `addListener(listener)`
 
+Listeners in Hover-Engine are functions that get called whenever an action is called. It receives the `engine.store` and `engine.actions` as an arguments.
+
+```javascript
+const commentThreadActions = {
+  init: () => [],
+  addComment: (thread, newComment) => thread.concat(newComment)
+}
+
+const engine = new HoverEngine()
+engine.addActions({thread: commentThreadActions})
+
+engine.addListener((store) => document.body.innerHTML = store.thread.join('<br />'))
+```
+
+Like `addActions`, you can add as many listeners as you want, each will be called with the new store.
+
 ### engine.actions
+
+As shown above in the various examples above, `engine.actions` provides a means to call any actions that were added via `addActions` off of engine. In addition, `actions` is automatically a composition of all same-named actions.
+
+```javascript
+const TimeZoneActions = {
+  init: () => {status: 'NOT_LOADED', timezone: null},
+  setTimezone: (state, newTimezone) => {status: 'LOADED', timezone: newTimezone},
+  getTimezoneFromZipCode: (state, zipCode, actions) => {
+    fetch('some.timezone.api/' + zipCode).then(
+      (timezoneData) => {
+        actions.setTimezone(timezone)
+      }
+    )
+  },
+  updateZipCode: (state, zipCode, actions) => {
+    actions.getTimezoneFromZipCode(zipCode)
+  }
+}
+
+const WeatherActions = {
+  init: () => {status: 'NOT_LOADED', weather: null},
+  setWeather: (state, newWeather) => {status: 'LOADED', weather: newWeather},
+  getWeatherFromZipCode: (state, zipCode, actions) => {
+    fetch('some.weather.api/' + zipCode).then(
+      (weatherData) => actions.setWeather(weather)
+    )
+  },
+  updateZipCode: (state, zipCode, actions) => {
+    actions.getWeatherFromZipCode(zipCode)
+  }
+}
+
+const engine = new HoverEngine()
+engine.addActions({
+  timezone: TimeZoneActions,
+  weather: WeatherActions
+})
+
+engine.actions.updateZipCode('14623')
+```
+
+In the example above, same-named actions like `updateZipCode` will fire off for both the `WeatherActions` and the `TimeZoneActions`. It queues up `weather.updateZipCode` and `timezone.updateZipCode`. As both of those resolve, any actions that are triggered (like `getWeatherFromZipCode` and `setWeather`) will also get added to the queue in order, and each will take in an updated version of the state.
+
+### engine.store
+
+The engine store exposes the current state of all the action groups. When you `addActions` the keys of the action object are the accessors for store values.
