@@ -20,7 +20,7 @@ class HoverEngine {
         while (shouldRunQueue && this.actionQueue.length > 0) {
           const nextAction = this.actionQueue[0]
           const updateStoreByAction = updateStoreByNextAction(nextAction)
-          this.store = nextAction.actions.reduce(updateStoreByAction, this.store)
+          this.store = (nextAction.actions || []).reduce(updateStoreByAction, this.store)
           this.actionQueue.shift()
           this.notifyListeners()
         }
