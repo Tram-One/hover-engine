@@ -1,0 +1,60 @@
+{
+  "name": "hover-engine",
+  "version": "1.0.0",
+  "description": "a state-management library that runs on technology and magic",
+  "main": "dist/hover-engine.js",
+  "scripts": {
+    "lint": "xo hover-engine.js",
+    "build": "rollup -c ./rollup.config.js",
+    "test": "jasmine specs/hover-engine-specs.js"
+  },
+  "keywords": [
+    "redux",
+    "tram-one",
+    "library"
+  ],
+  "author": {
+    "name": "Jesse Jurman",
+    "email": "j.r.jurman@gmail.com",
+    "url": "https://github.com/jrjurman"
+  },
+  "contributors": [
+    {
+      "name": "Ethan Jurman",
+      "url": "https://github.com/ethanjurman"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "jasmine": "^2.8.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-filesize": "^1.4.2",
+    "rollup-plugin-uglify": "^2.0.1",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "envs": [
+      "node",
+      "jasmine"
+    ],
+    "semicolon": false,
+    "space": 2,
+    "rules": {
+      "capitalized-comments": [
+        "error",
+        "never"
+      ],
+      "arrow-parens": [
+        "off"
+      ],
+      "object-shorthand": [
+        "error",
+        "consistent"
+      ]
+    }
+  }
+}
