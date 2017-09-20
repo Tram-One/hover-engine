@@ -1,3 +1,5 @@
+const values = (object) => Object.keys(object).map(key => object[key])
+
 class HoverEngine {
   constructor() {
     this.engine = {}
@@ -39,8 +41,7 @@ class HoverEngine {
     }
 
     const addActionGroupToEngine = (actions, group) => {
-      return Object.values(group)
-        .reduce(addActionToEngine, actions)
+      return values(group).reduce(addActionToEngine, actions)
     }
 
     const getAddKeyToActionFunc = (actionGroups) => {
@@ -49,8 +50,7 @@ class HoverEngine {
           action._storeKey = actionKey
           return action
         }
-        return Object.values(actionGroups[actionKey])
-          .map(addStoreKeyToAction)
+        return values(actionGroups[actionKey]).map(addStoreKeyToAction)
       }
     }
 

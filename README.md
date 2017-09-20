@@ -3,11 +3,11 @@
 A state-management library that runs on technology and magic.
 
 ```
-┌───────────────────────────────────────────────┐
-│                                               │
-│   Bundle size: 1.85 KB, Gzipped size: 761 B   │
-│                                               │
-└───────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│                                              │
+│   Bundle size: 1.9 KB, Gzipped size: 774 B   │
+│                                              │
+└──────────────────────────────────────────────┘
 ```
 
 ## You've got to have POWER!
