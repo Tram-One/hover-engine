@@ -262,6 +262,15 @@ describe('HoverEngine', () => {
       // dequeue (b's) increment -> { A: 3, B: 3 }, queue: []
       expect(engine.store.A).toEqual(3)
     })
+
+    it('should not modify the store if the action does not exist', () => {
+      const spies = {increment: jasmine.createSpy('a.increment')}
+      engine.addActions(ag.singleActionGroup(spies))
+      engine.actions.increment()
+      expect(engine.store.A).toEqual(1)
+      engine.actions.undefined()
+      expect(engine.store.A).toEqual(1)
+    })
   })
 
   describe('store', () => {
