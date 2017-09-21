@@ -1,4 +1,5 @@
 const values = (object) => Object.keys(object).map(key => object[key])
+const flatMap = (allItems, items) => allItems.concat(items)
 
 class HoverEngine {
   constructor() {
@@ -6,30 +7,7 @@ class HoverEngine {
     this.store = {}
     this.actionQueue = []
     this.listeners = []
-
-    const updateStoreByNextAction = (nextAction) => (store, action) => {
-      return Object.assign({}, store,
-        {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
-      )
-    }
-
-    const engineHandler = {
-      get: (target, name) => (args) => {
-        const shouldRunQueue = this.actionQueue.length === 0
-        this.actionQueue.push({actions: this.engine[name], args: args})
-
-        // eslint-disable-next-line no-unmodified-loop-condition
-        while (shouldRunQueue && this.actionQueue.length > 0) {
-          const nextAction = this.actionQueue[0]
-          const updateStoreByAction = updateStoreByNextAction(nextAction)
-          this.store = (nextAction.actions || []).reduce(updateStoreByAction, this.store)
-          this.actionQueue.shift()
-          this.notifyListeners()
-        }
-      }
-    }
-
-    this.actions = new Proxy({}, engineHandler)
+    this.actions = {}
   }
 
   addActions(actionGroups) {
@@ -70,6 +48,35 @@ class HoverEngine {
     this.store = Object.keys(actionGroups)
       .map(actionGroupToInitObject)
       .reduce(addInitObjectToStore, this.store)
+
+    const callActions = (name, args) => {
+      const updateStoreByNextAction = (nextAction) => (store, action) => {
+        return Object.assign({}, store,
+          {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
+        )
+      }
+
+      const shouldRunQueue = this.actionQueue.length === 0
+      this.actionQueue.push({actions: this.engine[name], args: args})
+
+      // eslint-disable-next-line no-unmodified-loop-condition
+      while (shouldRunQueue && this.actionQueue.length > 0) {
+        const nextAction = this.actionQueue[0]
+        const updateStoreByAction = updateStoreByNextAction(nextAction)
+        this.store = (nextAction.actions || []).reduce(updateStoreByAction, this.store)
+        this.actionQueue.shift()
+        this.notifyListeners()
+      }
+    }
+
+    const addActionNameToActions = (actionsObject, actionName) => {
+      return Object.assign({}, actionsObject, {[actionName]: (args) => callActions(actionName, args)})
+    }
+
+    this.actions = values(actionGroups)
+      .map(group => Object.keys(group))
+      .reduce(flatMap, [])
+      .reduce(addActionNameToActions, this.actions)
 
     return this
   }

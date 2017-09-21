@@ -3,11 +3,11 @@
 A state-management library that runs on technology and magic.
 
 ```
-┌──────────────────────────────────────────────┐
-│                                              │
-│   Bundle size: 1.9 KB, Gzipped size: 774 B   │
-│                                              │
-└──────────────────────────────────────────────┘
+┌───────────────────────────────────────────────┐
+│                                               │
+│   Bundle size: 2.09 KB, Gzipped size: 794 B   │
+│                                               │
+└───────────────────────────────────────────────┘
 ```
 
 ## You've got to have POWER!
@@ -22,7 +22,7 @@ Hover-Engine gives your app the following super-powers:
 * Notify as many listeners as you want!
 * Handle async (or chained) action calls with [semi-predictable results](https://en.wikipedia.org/wiki/Magic_\(illusion\))!
 * No Dependencies!
-* Light enough to give you flight (less than 2 KB)!
+* Light enough to give you flight (~2 KB)!
 
 ## Install
 ```bash
@@ -93,11 +93,11 @@ The `init` action is called after `engine.addActions` runs. It is passed no argu
 ```javascript
 const temperatureActions = {
   init: () => 70,
-  
+
   increaseTemp: (temp) => temp + 1,
-  
+
   setTemperature: (temp, newTemp) => newTemp,
-  
+
   pullTemperatureFromZipcode: (temp, zipCode, actions) => {
     fetch('some.temperature.api/' + zipCode)
       .then((tempData) => actions.setTemperature(tempData))

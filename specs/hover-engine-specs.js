@@ -123,34 +123,20 @@ describe('HoverEngine', () => {
       expect(spyB).toHaveBeenCalled()
     })
 
-    it('should call listener with updated store', () => {
-      let trap
-      const returnArgs = (store, actions) => {
-        trap = {store, actions}
-      }
-      engine.addListener(returnArgs)
-
+    it('should call listener with store and actions', () => {
+      const listenerSpy = jasmine.createSpy('listener')
       engine.addActions(ag.singleActionGroup())
+      engine.addListener(listenerSpy)
       engine.notifyListeners()
-
-      expect(trap.store).toEqual(engine.store)
+      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions)
     })
 
-    it('should call listener with actions', () => {
-      let trap
-      const returnArgs = (store, actions) => {
-        trap = {store, actions}
-      }
-      engine.addListener(returnArgs)
-
+    it('should call listener with updated store', () => {
+      const listenerSpy = jasmine.createSpy('listener')
       engine.addActions(ag.singleActionGroup())
-      engine.notifyListeners()
-      expect(trap.store.A).toEqual(0)
-
-      // can't inspect actions, so we'll just make
-      // sure it can do what actions can do
-      trap.actions.increment()
-      expect(trap.store.A).toEqual(1)
+      engine.addListener(listenerSpy)
+      engine.actions.increment()
+      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), jasmine.anything())
     })
 
     it('should be chainable', () => {
@@ -216,23 +202,13 @@ describe('HoverEngine', () => {
     })
 
     it('should pass arguements into the action', () => {
-      let trap
-      const argsSpy = (state, value, actions) => {
-        trap = {state, value, actions}
-      }
+      const argsSpy = jasmine.createSpy('args spy')
 
       const spies = {increment: argsSpy}
       engine.addActions(ag.argsActionGroup(spies))
       engine.actions.increment(10)
 
-      expect(trap.state).toEqual(0)
-      expect(trap.value).toEqual(10)
-
-      // can't inspect actions, so we'll just make
-      // sure it can do what actions can do
-      expect(engine.store.A).toEqual(1)
-      trap.actions.increment()
-      expect(engine.store.A).toEqual(2)
+      expect(argsSpy).toHaveBeenCalledWith(0, 10, engine.actions)
     })
 
     it('should be chainable off of actons arguement', () => {
@@ -261,15 +237,6 @@ describe('HoverEngine', () => {
       // dequeue (a's) increment -> { A: 2, B: 2 }, queue: [b.increment]
       // dequeue (b's) increment -> { A: 3, B: 3 }, queue: []
       expect(engine.store.A).toEqual(3)
-    })
-
-    it('should not modify the store if the action does not exist', () => {
-      const spies = {increment: jasmine.createSpy('a.increment')}
-      engine.addActions(ag.singleActionGroup(spies))
-      engine.actions.increment()
-      expect(engine.store.A).toEqual(1)
-      engine.actions.undefined()
-      expect(engine.store.A).toEqual(1)
     })
   })
 
