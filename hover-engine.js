@@ -10,26 +10,6 @@ class HoverEngine {
     this.actions = {}
   }
 
-  startEngine(name, args) {
-    const updateStoreByNextAction = (nextAction) => (store, action) => {
-      return Object.assign({}, store,
-        {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
-      )
-    }
-
-    const shouldRunQueue = this.actionQueue.length === 0
-    this.actionQueue.push({actions: this.engine[name], args: args})
-
-    // eslint-disable-next-line no-unmodified-loop-condition
-    while (shouldRunQueue && this.actionQueue.length > 0) {
-      const nextAction = this.actionQueue[0]
-      const updateStoreByAction = updateStoreByNextAction(nextAction)
-      this.store = (nextAction.actions || []).reduce(updateStoreByAction, this.store)
-      this.actionQueue.shift()
-      this.notifyListeners()
-    }
-  }
-
   addActions(actionGroups) {
     const addActionToEngine = (actions, action) => {
       const newActions = (action.name in actions) ?
@@ -69,8 +49,28 @@ class HoverEngine {
       .map(actionGroupToInitObject)
       .reduce(addInitObjectToStore, this.store)
 
+    const callActions = (name, args) => {
+      const updateStoreByNextAction = (nextAction) => (store, action) => {
+        return Object.assign({}, store,
+          {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
+        )
+      }
+
+      const shouldRunQueue = this.actionQueue.length === 0
+      this.actionQueue.push({actions: this.engine[name], args: args})
+
+      // eslint-disable-next-line no-unmodified-loop-condition
+      while (shouldRunQueue && this.actionQueue.length > 0) {
+        const nextAction = this.actionQueue[0]
+        const updateStoreByAction = updateStoreByNextAction(nextAction)
+        this.store = (nextAction.actions || []).reduce(updateStoreByAction, this.store)
+        this.actionQueue.shift()
+        this.notifyListeners()
+      }
+    }
+
     const addActionNameToActions = (actionsObject, actionName) => {
-      return Object.assign({}, actionsObject, {[actionName]: (args) => this.startEngine(actionName, args)})
+      return Object.assign({}, actionsObject, {[actionName]: (args) => callActions(actionName, args)})
     }
 
     this.actions = values(actionGroups)

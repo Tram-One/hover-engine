@@ -5,7 +5,7 @@ A state-management library that runs on technology and magic.
 ```
 ┌───────────────────────────────────────────────┐
 │                                               │
-│   Bundle size: 2.15 KB, Gzipped size: 799 B   │
+│   Bundle size: 2.09 KB, Gzipped size: 794 B   │
 │                                               │
 └───────────────────────────────────────────────┘
 ```
