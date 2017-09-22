@@ -1,4 +1,4 @@
-const HoverEnginer = require('../hover-engine')
+const HoverEnginer = require('../dist/hover-engine')
 const ag = require('./action-groups')
 
 describe('HoverEngine', () => {

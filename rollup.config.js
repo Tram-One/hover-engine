@@ -13,7 +13,8 @@ const plugins = [
         },
         modules: false
       }]
-    ]
+    ],
+    plugins: ['transform-object-rest-spread']
   }),
   uglify(),
   filesize()
