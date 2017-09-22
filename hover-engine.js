@@ -15,7 +15,7 @@ class HoverEngine {
       const newActions = (action.name in actions) ?
         actions[action.name].concat(action) :
         [action]
-      return Object.assign({}, actions, {[action.name]: newActions})
+      return {...actions, [action.name]: newActions}
     }
 
     const addActionGroupToEngine = (actions, group) => {
@@ -37,7 +37,7 @@ class HoverEngine {
       .reduce(addActionGroupToEngine, this.engine)
 
     const addInitObjectToStore = (store, initObject) => {
-      return Object.assign({}, store, {[initObject.key]: initObject.init()})
+      return {...store, [initObject.key]: initObject.init()}
     }
 
     const actionGroupToInitObject = (actionGroupKey) => Object({
@@ -51,9 +51,7 @@ class HoverEngine {
 
     const callActions = (name, args) => {
       const updateStoreByNextAction = (nextAction) => (store, action) => {
-        return Object.assign({}, store,
-          {[action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
-        )
+        return {...store, [action._storeKey]: action(store[action._storeKey], nextAction.args, this.actions)}
       }
 
       const shouldRunQueue = this.actionQueue.length === 0
@@ -70,7 +68,7 @@ class HoverEngine {
     }
 
     const addActionNameToActions = (actionsObject, actionName) => {
-      return Object.assign({}, actionsObject, {[actionName]: (args) => callActions(actionName, args)})
+      return {...actionsObject, [actionName]: (args) => callActions(actionName, args)}
     }
 
     this.actions = values(actionGroups)
