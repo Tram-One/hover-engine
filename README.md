@@ -1,4 +1,7 @@
 # Hover-Engine
+<a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/dm/hover-engine.svg" alt="Downloads"></a>
+<a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/v/hover-engine.svg" alt="Version"></a>
+<a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/l/hover-engine.svg" alt="License"></a>
 
 A state-management library that runs on technology and magic.
 
