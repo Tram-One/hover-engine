@@ -4,7 +4,7 @@
   "description": "a state-management library that runs on technology and magic",
   "main": "dist/hover-engine.js",
   "scripts": {
-    "lint": "xo hover-engine.js",
+    "lint": "xo hover-engine.js rollup.config.js specs/*.js",
     "build": "rollup -c ./rollup.config.js",
     "test": "jasmine specs/hover-engine-specs.js"
   },
@@ -30,6 +30,7 @@
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "eslint-config-tram-one": "^1.1.0",
     "jasmine": "^2.8.0",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
@@ -38,24 +39,8 @@
     "xo": "^0.18.2"
   },
   "xo": {
-    "envs": [
-      "node",
-      "jasmine"
-    ],
-    "semicolon": false,
-    "space": 2,
-    "rules": {
-      "capitalized-comments": [
-        "error",
-        "never"
-      ],
-      "arrow-parens": [
-        "off"
-      ],
-      "object-shorthand": [
-        "error",
-        "consistent"
-      ]
-    }
+    "extends": [
+      "tram-one"
+    ]
   }
 }
