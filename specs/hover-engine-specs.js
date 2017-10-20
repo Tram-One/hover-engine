@@ -257,11 +257,12 @@ describe('HoverEngine', () => {
     it('should not update store for invalid action calls', () => {
       engine.addActions(ag.singleActionGroup())
       engine.actions.increment()
-      // Only way to attempt to call a non-existent
+
+      // only way to attempt to call a non-existent
       // function and continue tests.
       try {
         engine.decrement()
-      } catch(err) {
+      } catch (err) {
         expect(err).toEqual(jasmine.any(Error))
       }
       expect(engine.store.A).toBe(1)
