@@ -87,8 +87,8 @@ class HoverEngine {
     return this
   }
 
-  notifyListeners(action, args) {
-    this.listeners.forEach(listener => listener(this.store, this.actions, action, args))
+  notifyListeners(actionName, actionArguments) {
+    this.listeners.forEach(listener => listener(this.store, this.actions, actionName, actionArguments))
 
     return this
   }
