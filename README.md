@@ -166,7 +166,7 @@ You'll notice in the above example that calling `addTodo` actually called both t
 
 ### `addListener(listener)`
 
-Listeners in Hover-Engine are functions that get called whenever an action is called. It receives the `engine.store` and `engine.actions` as an arguments.
+Listeners in Hover-Engine are functions that get called whenever an action is called. It receives the `engine.store`, `engine.actions`, and the action that was called (as a string) as an arguments.
 
 ```javascript
 const commentThreadActions = {
@@ -180,7 +180,17 @@ engine.addActions({thread: commentThreadActions})
 engine.addListener((store) => document.body.innerHTML = store.thread.join('<br />'))
 ```
 
-Like `addActions`, you can add as many listeners as you want, each will be called with the new store.
+Like `addActions`, you can add as many listeners as you want by calling `addListener` multiple times. Each will be called with the new store.
+
+#### Listener Arguements
+You can use listeners to debug what is happening in hover-engine. In the example below, we log the action and the new values in the store.
+
+```javascript
+const debugListener = (newStore, actions, actionName) => {
+  console.log("Action Triggered:", actionName)
+  console.log("New Store:", newStore)
+}
+```
 
 ### `engine.actions`
 

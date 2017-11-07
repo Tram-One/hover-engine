@@ -1,4 +1,6 @@
-const HoverEnginer = require('../hover-engine')
+// we won't always have this file built, so don't depend on it to pass lint
+// eslint-disable-next-line import/no-unresolved
+const HoverEnginer = require('../dist/hover-engine')
 const ag = require('./action-groups')
 
 describe('HoverEngine', () => {
@@ -123,12 +125,13 @@ describe('HoverEngine', () => {
       expect(spyB).toHaveBeenCalled()
     })
 
-    it('should call listener with store and actions', () => {
+    it('should call listener with store, actions, and actionName', () => {
       const listenerSpy = jasmine.createSpy('listener')
+      const actionName = 'increment'
       engine.addActions(ag.singleActionGroup())
       engine.addListener(listenerSpy)
-      engine.notifyListeners()
-      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions)
+      engine.notifyListeners(actionName)
+      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions, 'increment')
     })
 
     it('should call listener with updated store', () => {
@@ -136,7 +139,7 @@ describe('HoverEngine', () => {
       engine.addActions(ag.singleActionGroup())
       engine.addListener(listenerSpy)
       engine.actions.increment()
-      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), jasmine.anything())
+      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), jasmine.anything(), jasmine.anything())
     })
 
     it('should be chainable', () => {
@@ -199,6 +202,15 @@ describe('HoverEngine', () => {
       engine.actions.increment()
 
       expect(engine.notifyListeners).toHaveBeenCalled()
+    })
+
+    it('should trigger notifyListeners with the action name', () => {
+      spyOn(engine, 'notifyListeners')
+
+      engine.addActions(ag.singleActionGroup())
+      engine.actions.increment()
+
+      expect(engine.notifyListeners).toHaveBeenCalledWith('increment')
     })
 
     it('should pass arguements into the action', () => {
