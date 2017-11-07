@@ -191,9 +191,9 @@ const debugListener = (store, actions, actionName, actionArguments) => {
 }
 ```
 
-### `notifyListeners(action)`
+### `notifyListeners(actionName, actionArguments)`
 
-`notifyListeners` is a function which tells all the listeners to be triggered. It takes in an action name (which is optional), and calls all the listeners that have been added with the current store, actions, and whatever action name was passed in. You shouldn't need this in most applications, but can be useful for testing or debugging your logic.
+`notifyListeners` is a function which tells all the listeners to be triggered. It takes in an action name and action argument (both of which are optional), and calls all the listeners that have been added with the current store and actions, and passes along the action name and argument if they were included. You shouldn't need this in most applications, but can be useful for testing or debugging your logic.
 
 ```javascript
 const counterActions = {
