@@ -8,8 +8,8 @@ const numberActions = {
 
 const engine = new HoverEngine()
 engine.addActions({num: numberActions})
-engine.addListener((store, actions, actionName, actionArguements) => {
-  console.log(actionName, actionArguements, '->', store)
+engine.addListener((store, actions, actionName, actionArguments) => {
+  console.log(actionName, actionArguments, '->', store)
 })
 
 engine.actions.add(5) // add 5 -> { num: 5 }

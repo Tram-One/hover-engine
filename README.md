@@ -92,7 +92,7 @@ All groups of actions **must** include the `init` action. This action dictates t
 
 The `init` action is called after `engine.addActions` runs. It is passed no arguments.
 
-#### Action Arguements
+#### Action Arguments
 ```javascript
 const temperatureActions = {
   init: () => 70,
@@ -120,7 +120,7 @@ engine.actions.increaseTemp()
 console.log(engine.store) // -> { temp: 71 }
 ```
 
-The second arguement is anything that we pass in when we call the action. For example:
+The second argument is anything that we pass in when we call the action. For example:
 ```javascript
 const engine = new HoverEngine()
 engine.addActions({temp: temperatureActions})
@@ -182,12 +182,12 @@ engine.addListener((store) => document.body.innerHTML = store.thread.join('<br /
 
 Like `addActions`, you can add as many listeners as you want by calling `addListener` multiple times. Each will be called with the new store.
 
-#### Listener Arguements
-Along with the store and actions, listeners also recieve the name of the action that was called, and the arguement it was called with. With these, you can use listeners to debug what is happening in hover-engine. In the example below, we log the action and the new values in the store.
+#### Listener Arguments
+Along with the store and actions, listeners also recieve the name of the action that was called, and the argument it was called with. With these, you can use listeners to debug what is happening in hover-engine. In the example below, we log the action and the new values in the store.
 
 ```javascript
-const debugListener = (store, actions, actionName, actionArguements) => {
-  console.log(actionName, actionArguements, '->', store)
+const debugListener = (store, actions, actionName, actionArguments) => {
+  console.log(actionName, actionArguments, '->', store)
 }
 ```
 

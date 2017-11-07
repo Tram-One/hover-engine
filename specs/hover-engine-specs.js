@@ -146,7 +146,7 @@ describe('HoverEngine', () => {
       expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), whatever, whatever, whatever)
     })
 
-    it('should call listener with called action and action arguements', () => {
+    it('should call listener with called action and action arguments', () => {
       const listenerSpy = jasmine.createSpy('listener')
       engine.addActions(ag.argsActionGroup())
       engine.addListener(listenerSpy)
@@ -216,7 +216,7 @@ describe('HoverEngine', () => {
       expect(engine.notifyListeners).toHaveBeenCalled()
     })
 
-    it('should trigger notifyListeners with the action name and arguement', () => {
+    it('should trigger notifyListeners with the action name and argument', () => {
       spyOn(engine, 'notifyListeners')
 
       engine.addActions(ag.argsActionGroup())
@@ -225,7 +225,7 @@ describe('HoverEngine', () => {
       expect(engine.notifyListeners).toHaveBeenCalledWith('increment', 5)
     })
 
-    it('should pass arguements into the action', () => {
+    it('should pass arguments into the action', () => {
       const argsSpy = jasmine.createSpy('args spy')
 
       const spies = {increment: argsSpy}
@@ -235,7 +235,7 @@ describe('HoverEngine', () => {
       expect(argsSpy).toHaveBeenCalledWith(0, 10, engine.actions)
     })
 
-    it('should be chainable off of actons arguement', () => {
+    it('should be chainable off of actons argument', () => {
       engine.addActions(ag.chainActionGroup())
 
       expect(engine.store.A).toEqual(0)
