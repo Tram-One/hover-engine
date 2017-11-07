@@ -166,7 +166,7 @@ You'll notice in the above example that calling `addTodo` actually called both t
 
 ### `addListener(listener)`
 
-Listeners in Hover-Engine are functions that get called whenever an action is called. It receives the `engine.store`, `engine.actions`, and the action that was called (as a string) as an arguments.
+Listeners in Hover-Engine are functions that get called whenever an action is called. It receives the updated `engine.store`, `engine.actions`, as well as information about the action that was called (read below).
 
 ```javascript
 const commentThreadActions = {
@@ -183,14 +183,30 @@ engine.addListener((store) => document.body.innerHTML = store.thread.join('<br /
 Like `addActions`, you can add as many listeners as you want by calling `addListener` multiple times. Each will be called with the new store.
 
 #### Listener Arguements
-You can use listeners to debug what is happening in hover-engine. In the example below, we log the action and the new values in the store.
+Along with the store and actions, listeners also recieve the name of the action that was called, and the arguement it was called with. With these, you can use listeners to debug what is happening in hover-engine. In the example below, we log the action and the new values in the store.
 
 ```javascript
-const debugListener = (newStore, actions, actionName) => {
-  console.log("Action Triggered:", actionName)
-  console.log("New Store:", newStore)
+const debugListener = (store, actions, actionName, actionArguements) => {
+  console.log(actionName, actionArguements, '->', store)
 }
 ```
+
+### `notifyListeners(action)`
+
+`notifyListeners` is a function which tells all the listeners to be triggered. It takes in an action name (which is optional), and calls all the listeners that have been added with the current store, actions, and whatever action name was passed in. You shouldn't need this in most applications, but can be useful for testing or debugging your logic.
+
+```javascript
+const counterActions = {
+  init: () => 0,
+  increment: (counter) => counter + 1
+}
+
+const engine = new HoverEngine()
+engine.addListener((store) => console.log('store:', store))
+engine.notifyListeners() // store: {counter: 0}
+```
+
+Like `addActions`, you can add as many listeners as you want by calling `addListener` multiple times. Each will be called with the new store.
 
 ### `engine.actions`
 

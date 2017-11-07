@@ -3,6 +3,11 @@
 const HoverEnginer = require('../dist/hover-engine')
 const ag = require('./action-groups')
 
+// asymmetric matcher for params that we don't care about
+const whatever = {
+  asymmetricMatch: () => true
+}
+
 describe('HoverEngine', () => {
   let engine
   beforeEach(() => {
@@ -125,13 +130,12 @@ describe('HoverEngine', () => {
       expect(spyB).toHaveBeenCalled()
     })
 
-    it('should call listener with store, actions, and actionName', () => {
+    it('should call listener with store, actions', () => {
       const listenerSpy = jasmine.createSpy('listener')
-      const actionName = 'increment'
       engine.addActions(ag.singleActionGroup())
       engine.addListener(listenerSpy)
-      engine.notifyListeners(actionName)
-      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions, 'increment')
+      engine.notifyListeners()
+      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions, whatever, whatever)
     })
 
     it('should call listener with updated store', () => {
@@ -139,7 +143,15 @@ describe('HoverEngine', () => {
       engine.addActions(ag.singleActionGroup())
       engine.addListener(listenerSpy)
       engine.actions.increment()
-      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), jasmine.anything(), jasmine.anything())
+      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), whatever, whatever, whatever)
+    })
+
+    it('should call listener with called action and action arguements', () => {
+      const listenerSpy = jasmine.createSpy('listener')
+      engine.addActions(ag.argsActionGroup())
+      engine.addListener(listenerSpy)
+      engine.actions.increment(5)
+      expect(listenerSpy).toHaveBeenCalledWith(whatever, whatever, 'increment', 5)
     })
 
     it('should be chainable', () => {
@@ -204,13 +216,13 @@ describe('HoverEngine', () => {
       expect(engine.notifyListeners).toHaveBeenCalled()
     })
 
-    it('should trigger notifyListeners with the action name', () => {
+    it('should trigger notifyListeners with the action name and arguement', () => {
       spyOn(engine, 'notifyListeners')
 
-      engine.addActions(ag.singleActionGroup())
-      engine.actions.increment()
+      engine.addActions(ag.argsActionGroup())
+      engine.actions.increment(5)
 
-      expect(engine.notifyListeners).toHaveBeenCalledWith('increment')
+      expect(engine.notifyListeners).toHaveBeenCalledWith('increment', 5)
     })
 
     it('should pass arguements into the action', () => {
