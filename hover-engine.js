@@ -65,7 +65,7 @@ class HoverEngine {
         const updateStoreByAction = updateStoreByNextAction(nextAction)
         this.store = nextAction.actions.reduce(updateStoreByAction, this.store)
         this.actionQueue.shift()
-        this.notifyListeners()
+        this.notifyListeners(name, args)
       }
     }
 
@@ -87,8 +87,8 @@ class HoverEngine {
     return this
   }
 
-  notifyListeners() {
-    this.listeners.forEach(listener => listener(this.store, this.actions))
+  notifyListeners(actionName, actionArguments) {
+    this.listeners.forEach(listener => listener(this.store, this.actions, actionName, actionArguments))
 
     return this
   }

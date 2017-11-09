@@ -1,5 +1,12 @@
-const HoverEnginer = require('../hover-engine')
+// we won't always have this file built, so don't depend on it to pass lint
+// eslint-disable-next-line import/no-unresolved
+const HoverEnginer = require('../dist/hover-engine')
 const ag = require('./action-groups')
+
+// asymmetric matcher for params that we don't care about
+const whatever = {
+  asymmetricMatch: () => true
+}
 
 describe('HoverEngine', () => {
   let engine
@@ -123,12 +130,12 @@ describe('HoverEngine', () => {
       expect(spyB).toHaveBeenCalled()
     })
 
-    it('should call listener with store and actions', () => {
+    it('should call listener with store, actions', () => {
       const listenerSpy = jasmine.createSpy('listener')
       engine.addActions(ag.singleActionGroup())
       engine.addListener(listenerSpy)
       engine.notifyListeners()
-      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions)
+      expect(listenerSpy).toHaveBeenCalledWith(engine.store, engine.actions, whatever, whatever)
     })
 
     it('should call listener with updated store', () => {
@@ -136,7 +143,15 @@ describe('HoverEngine', () => {
       engine.addActions(ag.singleActionGroup())
       engine.addListener(listenerSpy)
       engine.actions.increment()
-      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), jasmine.anything())
+      expect(listenerSpy).toHaveBeenCalledWith(jasmine.objectContaining({A: 1}), whatever, whatever, whatever)
+    })
+
+    it('should call listener with called action and action arguments', () => {
+      const listenerSpy = jasmine.createSpy('listener')
+      engine.addActions(ag.argsActionGroup())
+      engine.addListener(listenerSpy)
+      engine.actions.increment(5)
+      expect(listenerSpy).toHaveBeenCalledWith(whatever, whatever, 'increment', 5)
     })
 
     it('should be chainable', () => {
@@ -201,7 +216,16 @@ describe('HoverEngine', () => {
       expect(engine.notifyListeners).toHaveBeenCalled()
     })
 
-    it('should pass arguements into the action', () => {
+    it('should trigger notifyListeners with the action name and argument', () => {
+      spyOn(engine, 'notifyListeners')
+
+      engine.addActions(ag.argsActionGroup())
+      engine.actions.increment(5)
+
+      expect(engine.notifyListeners).toHaveBeenCalledWith('increment', 5)
+    })
+
+    it('should pass arguments into the action', () => {
       const argsSpy = jasmine.createSpy('args spy')
 
       const spies = {increment: argsSpy}
@@ -211,7 +235,7 @@ describe('HoverEngine', () => {
       expect(argsSpy).toHaveBeenCalledWith(0, 10, engine.actions)
     })
 
-    it('should be chainable off of actons arguement', () => {
+    it('should be chainable off of actons argument', () => {
       engine.addActions(ag.chainActionGroup())
 
       expect(engine.store.A).toEqual(0)

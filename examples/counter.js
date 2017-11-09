@@ -7,10 +7,12 @@ const numberActions = {
 }
 
 const engine = new HoverEngine()
-engine.addActions({ num: numberActions })
-engine.addListener((store) => console.log('NEW STATE:', store))
+engine.addActions({num: numberActions})
+engine.addListener((store, actions, actionName, actionArguments) => {
+  console.log(actionName, actionArguments, '->', store)
+})
 
-engine.actions.add(5) // -> NEW STATE: { num: 5 }
-engine.actions.add(8) // -> NEW STATE: { num: 13 }
-engine.actions.sub(5) // -> NEW STATE: { num: 8 }
-console.log(engine.store) // -> { num: 8 }
+engine.actions.add(5) // add 5 -> { num: 5 }
+engine.actions.add(8) // add 8 -> { num: 13 }
+engine.actions.sub(5) // sub 5 -> { num: 8 }
+console.log(engine.store) // { num: 8 }

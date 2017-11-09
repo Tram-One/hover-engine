@@ -66,7 +66,7 @@ module.exports.argsActionGroup = (spies) => Object({
     },
     increment: (state, value, actions) => {
       spies && spies.increment && spies.increment(state, value, actions)
-      return state + 1
+      return state + value
     }
   }
 })
