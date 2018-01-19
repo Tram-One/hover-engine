@@ -40,7 +40,7 @@ class HoverEngine {
       return Object.assign({}, store, {[initObject.key]: initObject.init()})
     }
 
-    const actionGroupToInitObject = (actionGroupKey) => Object({
+    const actionGroupToInitObject = (actionGroupKey) => ({
       key: actionGroupKey,
       init: actionGroups[actionGroupKey].init
     })

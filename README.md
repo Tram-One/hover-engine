@@ -2,16 +2,10 @@
 <a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/dm/hover-engine.svg" alt="Downloads"></a>
 <a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/v/hover-engine.svg" alt="Version"></a>
 <a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/l/hover-engine.svg" alt="License"></a>
+<a href="https://www.npmjs.com/package/hover-engine"><img src="https://github.com/Tram-One/hover-engine/raw/master/docs/images/size.svg?sanitize=true" alt="build size"></a>
+<a href="https://join.slack.com/t/tram-one/shared_invite/enQtMjY0NDA3OTg2MzQyLWUyMGIyZTYwNzZkNDJiNWNmNzdiOTMzYjg0YzMzZTkzZDE4MTlmN2Q2YjE0NDIwMGI3ODEzYzQ4ODdlMzQ2ODM"><img src="https://img.shields.io/badge/slack-join-83ded3.svg?style=flat" alt="Join Slack"></a>
 
-A state-management library that runs on technology and magic.
-
-```
-┌───────────────────────────────────────────────┐
-│                                               │
-│   Bundle size: 2.09 KB, Gzipped size: 794 B   │
-│                                               │
-└───────────────────────────────────────────────┘
-```
+A state-management library that runs on predictable magic.
 
 ## You've got to have POWER!
 Hover-Engine is inspired by
