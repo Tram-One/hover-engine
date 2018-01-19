@@ -1,6 +1,6 @@
 // we won't always have this file built, so don't depend on it to pass lint
 // eslint-disable-next-line import/no-unresolved
-const HoverEnginer = require('../dist/hover-engine')
+const HoverEngine = require('../dist/hover-engine')
 const ag = require('./action-groups')
 
 // asymmetric matcher for params that we don't care about
@@ -11,7 +11,7 @@ const whatever = {
 describe('HoverEngine', () => {
   let engine
   beforeEach(() => {
-    engine = new HoverEnginer()
+    engine = new HoverEngine()
   })
 
   describe('constructor', () => {

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-module.exports.singleActionGroup = (spies) => Object({
+module.exports.singleActionGroup = (spies) => ({
   A: {
     init: () => {
       spies && spies.init && spies.init()
@@ -12,7 +12,7 @@ module.exports.singleActionGroup = (spies) => Object({
   }
 })
 
-module.exports.multipleActionGroups = (spies) => Object({
+module.exports.multipleActionGroups = (spies) => ({
   A: {
     init: () => {
       spies && spies.a.init && spies.a.init()
@@ -35,7 +35,7 @@ module.exports.multipleActionGroups = (spies) => Object({
   }
 })
 
-module.exports.differentActionGroups = (spies) => Object({
+module.exports.differentActionGroups = (spies) => ({
   A: {
     init: () => {
       spies && spies.a.init && spies.a.init()
@@ -58,7 +58,7 @@ module.exports.differentActionGroups = (spies) => Object({
   }
 })
 
-module.exports.argsActionGroup = (spies) => Object({
+module.exports.argsActionGroup = (spies) => ({
   A: {
     init: () => {
       spies && spies.init && spies.init()
@@ -71,7 +71,7 @@ module.exports.argsActionGroup = (spies) => Object({
   }
 })
 
-module.exports.chainActionGroup = (spies) => Object({
+module.exports.chainActionGroup = (spies) => ({
   A: {
     init: () => {
       spies && spies.init && spies.init()
@@ -89,7 +89,7 @@ module.exports.chainActionGroup = (spies) => Object({
   }
 })
 
-module.exports.multipleChainActionGroups = (spies) => Object({
+module.exports.multipleChainActionGroups = (spies) => ({
   A: {
     init: () => {
       spies && spies.init && spies.init()
@@ -121,3 +121,20 @@ module.exports.multipleChainActionGroups = (spies) => Object({
     }
   }
 })
+
+const buildRandomActionGroup = (name, numberOfActions) => ({
+  [name]: (Array(numberOfActions).fill().reduce((actions, _, index) => {
+    actions[`increment_${index}`] = (state) => state + index
+    return actions
+  }, {init: () => 0}))
+})
+
+const buildRandomActionGroups = (numberOfActionGroups, numberOfActions) => (
+  Array(numberOfActionGroups).fill().reduce((actionGroups, _, index) => {
+    actionGroups[`counter_${index}`] = buildRandomActionGroup(`counter_${index}`, numberOfActions)[`counter_${index}`]
+    return actionGroups
+  }, {})
+)
+
+module.exports.buildRandomActionGroup = buildRandomActionGroup
+module.exports.buildRandomActionGroups = buildRandomActionGroups

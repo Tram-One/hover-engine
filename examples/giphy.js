@@ -4,7 +4,7 @@ const HoverEngine = require('../hover-engine')
 const GIPHY_API_KEY = 'qcqAg2MoMDFsqD8A62ZvsRz8U06hioZ2'
 
 const gifActions = {
-  init: () => Object({url: '', status: 'NOT_LOADED'}),
+  init: () => ({url: '', status: 'NOT_LOADED'}),
   fetchGIF: (state, searchString, actions) => {
     fetch(`https://api.giphy.com/v1/gifs/search?q=${searchString}&api_key=${GIPHY_API_KEY}`)
       .then(data => data.json())
