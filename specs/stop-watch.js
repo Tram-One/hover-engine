@@ -1,5 +1,6 @@
 // stop-watch.js
 // potential performance library for node
+/* eslint-disable no-unused-expressions, max-params */
 
 // really dumb helper method to show number (with left padding) over number
 const counterDisplay = (run, total) => (total).toString().split('')
