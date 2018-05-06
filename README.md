@@ -23,13 +23,13 @@ Hover-Engine gives your app the following super-powers:
 * Light enough to give you flight (~2 KB)!
 
 ## Install
+You can install hover-engine with npm like any other package.
 ```bash
 npm install --save hover-engine
 ```
 
 You can also include the umd distributable in your webpage directly with a
 script tag.
-
 ```html
 <head>
   <script src="http://unpkg.com/hover-engine" />
