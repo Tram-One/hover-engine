@@ -38,4 +38,5 @@ function generateBadge(label, value) {
   })
 }
 
-generateBadge('size', getSize('hover-engine.js'))
+generateBadge('esm-size', getSize('hover-engine.esm.js'))
+generateBadge('umd-size', getSize('hover-engine.umd.js'))
