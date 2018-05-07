@@ -1,10 +1,14 @@
 {
   "name": "hover-engine",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "a state-management library that runs on technology and magic",
   "main": "dist/hover-engine.esm.js",
   "module": "dist/hover-engine.esm.js",
   "umd": "dist/hover-engine.umd.js",
+  "files": [
+    "dist/hover-engine.esm.js",
+    "dist/hover-engine.umd.js"
+  ],
   "scripts": {
     "lint": "xo hover-engine.js rollup.config.js specs/*.js",
     "build-esm": "rollup -c ./rollup.config.esm.js",
