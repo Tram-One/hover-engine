@@ -10,6 +10,13 @@ class HoverEngine {
     this.actions = {}
   }
 
+  /**
+   * addActions
+   * - adds action groups to the engine
+   * @param {Object} actionGroups
+   * - keys in the action group object can be used to access stores
+   * - values in the action group object are functions to mutate those stores
+   */
   addActions(actionGroups) {
     const addActionToEngine = (actions, action) => {
       const newActions = (action.name in actions) ?
@@ -81,12 +88,25 @@ class HoverEngine {
     return this
   }
 
+  /**
+   * addListener
+   * - function that takes in a function to call when an action occurs
+   * @param {Function} listener function that can take in a store, actions to
+   * call, actionName of what was called, and any arguments passed in
+   */
   addListener(listener) {
     this.listeners.push(listener)
 
     return this
   }
 
+  /**
+   * notifyListeners
+   * - used internally to call each listener that has been added with addListners
+   * - doesn't actually trigger the action
+   * @param {*} actionName - name of action triggered
+   * @param {*} actionArguments - arguements passed into action when called
+   */
   notifyListeners(actionName, actionArguments) {
     this.listeners.forEach(listener => listener(this.store, this.actions, actionName, actionArguments))
 

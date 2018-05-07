@@ -2,7 +2,8 @@
 <a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/dm/hover-engine.svg" alt="Downloads"></a>
 <a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/v/hover-engine.svg" alt="Version"></a>
 <a href="https://www.npmjs.com/package/hover-engine"><img src="https://img.shields.io/npm/l/hover-engine.svg" alt="License"></a>
-<a href="https://www.npmjs.com/package/hover-engine"><img src="https://github.com/Tram-One/hover-engine/raw/master/docs/images/size.svg?sanitize=true" alt="build size"></a>
+<a href="https://www.npmjs.com/package/hover-engine"><img src="https://github.com/Tram-One/hover-engine/raw/master/docs/images/esm-size.svg?sanitize=true" alt="ESM build size"></a>
+<a href="http://unpkg.com/hover-engine"><img src="https://github.com/Tram-One/hover-engine/raw/master/docs/images/umd-size.svg?sanitize=true" alt="UMD build size"></a>
 <a href="https://join.slack.com/t/tram-one/shared_invite/enQtMjY0NDA3OTg2MzQyLWUyMGIyZTYwNzZkNDJiNWNmNzdiOTMzYjg0YzMzZTkzZDE4MTlmN2Q2YjE0NDIwMGI3ODEzYzQ4ODdlMzQ2ODM"><img src="https://img.shields.io/badge/slack-join-83ded3.svg?style=flat" alt="Join Slack"></a>
 
 A state-management library that runs on predictable magic.
@@ -22,8 +23,17 @@ Hover-Engine gives your app the following super-powers:
 * Light enough to give you flight (~2 KB)!
 
 ## Install
+You can install hover-engine with npm like any other package.
 ```bash
 npm install --save hover-engine
+```
+
+You can also include the umd distributable in your webpage directly with a
+script tag.
+```html
+<head>
+  <script src="http://unpkg.com/hover-engine" />
+</head>
 ```
 
 ## Usage

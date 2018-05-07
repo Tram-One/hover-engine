@@ -1,6 +1,6 @@
 // we won't always have this file built, so don't depend on it to pass lint
 // eslint-disable-next-line import/no-unresolved
-const HoverEngine = require('../dist/hover-engine')
+const HoverEngine = require('../dist/hover-engine.umd.js')
 const ag = require('./action-groups')
 
 // asymmetric matcher for params that we don't care about
