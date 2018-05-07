@@ -32,7 +32,7 @@ You can also include the umd distributable in your webpage directly with a
 script tag.
 ```html
 <head>
-  <script src="http://unpkg.com/hover-engine" />
+  <script src="https://unpkg.com/hover-engine@2.0.2/dist/hover-engine.umd.js" />
 </head>
 ```
 
