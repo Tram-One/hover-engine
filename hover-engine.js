@@ -77,7 +77,14 @@ class HoverEngine {
     }
 
     const addActionNameToActions = (actionsObject, actionName) => {
-      return Object.assign({}, actionsObject, {[actionName]: (args) => callActions(actionName, args)})
+      return Object.assign({}, actionsObject, {[actionName]: (args, badArgs) => {
+        if (badArgs) {
+          console.warn(`Hover-Engine: action '${actionName}' was called with more than one argument,`
+          + ' but actions only take one argument. An action only needs to pass an (arguement) and will'
+          + ' resolve with (store, arguement, actions)')
+        }
+        return callActions(actionName, args)
+      }})
     }
 
     this.actions = values(actionGroups)

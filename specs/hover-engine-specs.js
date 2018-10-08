@@ -15,12 +15,24 @@ describe('HoverEngine', () => {
   })
 
   describe('constructor', () => {
+    it('builds an internal engine', () => {
+      expect(engine.engine).toBeDefined()
+    })
+
     it('builds a store', () => {
       expect(engine.store).toBeDefined()
     })
 
     it('builds actions', () => {
       expect(engine.actions).toBeDefined()
+    })
+
+    it('builds actionQueue', () => {
+      expect(engine.actionQueue).toBeDefined()
+    })
+
+    it('builds listeners', () => {
+      expect(engine.listeners).toBeDefined()
     })
   })
 
@@ -233,6 +245,18 @@ describe('HoverEngine', () => {
       engine.actions.increment(10)
 
       expect(argsSpy).toHaveBeenCalledWith(0, 10, engine.actions)
+    })
+
+    it('should warn on passing more than one argument into the action', () => {
+      const argsSpy = jasmine.createSpy('args spy')
+      spyOn(console, 'warn')
+
+      const spies = {increment: argsSpy}
+      engine.addActions(ag.argsActionGroup(spies))
+      engine.actions.increment(10, 20)
+
+      expect(argsSpy).toHaveBeenCalledWith(0, 10, engine.actions)
+      expect(console.warn).toHaveBeenCalledWith(jasmine.stringMatching('called with more than one argument'))
     })
 
     it('should be chainable off of actons argument', () => {
